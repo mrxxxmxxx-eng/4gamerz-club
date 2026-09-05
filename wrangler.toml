@@ -9,7 +9,7 @@ not_found_handling = "single-page-application"
 [[d1_databases]]
 binding = "DB"
 database_name = "4gamerz-club"
-database_id = "database_id = "4731cdf5-da61-4da6-967f-d816ee03af8c"
+database_id = "4731cdf5-da61-4da6-967f-d816ee03af8c" 
 migrations_dir = "migrations"
 
 [[r2_buckets]]
