@@ -6,10 +6,10 @@ compatibility_date = "2026-09-05"
 directory = "./"
 binding = "ASSETS"
 not_found_handling = "single-page-application"
+run_worker_first = ["/api/*", "/admin"]
 
 [[d1_databases]]
 binding = "DB"
 database_name = "4gamerz-club"
-database_id = "4731cdf5-da61-4da6-967f-d816ee03af8c" 
+database_id = "4731cdf5-da61-4da6-967f-d816ee03af8c"
 migrations_dir = "migrations"
-
