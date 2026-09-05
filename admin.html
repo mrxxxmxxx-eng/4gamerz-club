@@ -1,240 +1,1173 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>4Gamerz Admin</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;background:#07070d;color:#fff;font-family:Arial;padding:20px}
-.wrap{max-width:900px;margin:auto}.card{background:#11131b;border:1px solid #ffffff18;border-radius:16px;padding:20px;margin:15px 0}
-input,button{font:inherit}.input{width:100%;background:#090a11;color:#fff;border:1px solid #ffffff20;border-radius:9px;padding:11px;margin-top:6px}
-button{border:0;border-radius:9px;padding:11px 16px;cursor:pointer;font-weight:bold;background:#22d3ee}.danger{background:#ef4444;color:#fff}
-.hidden{display:none}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.prices{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.images{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.imgbox{background:#090a11;border-radius:12px;overflow:hidden}.imgbox img{width:100%;height:150px;object-fit:cover}.imgbox div{padding:8px}
-.ok{color:#31f7a4}.err{color:#ff7777}.muted{color:#999;font-size:13px}
-@media(max-width:700px){.grid,.prices,.images{grid-template-columns:1fr}}
+*{box-sizing:border-box}
+
+body{
+margin:0;
+background:#07070d;
+color:#fff;
+font-family:Arial;
+padding:20px
+}
+
+.wrap{
+max-width:900px;
+margin:auto
+}
+
+.card{
+background:#11131b;
+border:1px solid #ffffff18;
+border-radius:16px;
+padding:20px;
+margin:15px 0
+}
+
+input,button{
+font:inherit
+}
+
+.input{
+width:100%;
+background:#090a11;
+color:#fff;
+border:1px solid #ffffff20;
+border-radius:9px;
+padding:11px;
+margin-top:6px
+}
+
+textarea.input{
+min-height:90px;
+resize:vertical
+}
+
+button{
+border:0;
+border-radius:9px;
+padding:11px 16px;
+cursor:pointer;
+font-weight:bold;
+background:#22d3ee;
+color:#061018
+}
+
+button:disabled{
+opacity:.6;
+cursor:not-allowed
+}
+
+.danger{
+background:#ef4444;
+color:#fff
+}
+
+.hidden{
+display:none
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px
+}
+
+.prices{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px
+}
+
+.images{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px
+}
+
+.imgbox{
+background:#090a11;
+border-radius:12px;
+overflow:hidden
+}
+
+.imgbox img{
+width:100%;
+height:150px;
+object-fit:cover
+}
+
+.imgbox div{
+padding:8px
+}
+
+.ok{
+color:#31f7a4
+}
+
+.err{
+color:#ff7777
+}
+
+.muted{
+color:#999;
+font-size:13px
+}
+
+.offerPreview{
+margin-top:15px;
+padding:20px;
+border-radius:15px;
+background:linear-gradient(135deg,#171927,#0b0d16);
+border:1px solid #ff3b3044;
+text-align:center
+}
+
+.offerPreviewTitle{
+display:inline-block;
+background:#ff3b30;
+padding:7px 15px;
+border-radius:30px;
+font-weight:bold
+}
+
+.offerPreviewText{
+font-size:20px;
+font-weight:bold;
+margin:12px 0
+}
+
+@media(max-width:700px){
+
+.grid,
+.prices,
+.images{
+grid-template-columns:1fr
+}
+
+}
 </style>
 </head>
 
 <body>
+
 <div class="wrap">
 
+<!-- LOGIN -->
+
 <section id="login" class="card">
+
 <h1>🔐 4GAMERZ Admin</h1>
-<p class="muted">لوحة التحكم</p>
-<input id="password" class="input" type="password" placeholder="كلمة المرور">
-<button id="loginBtn" style="width:100%;margin-top:10px">دخول</button>
+
+<p class="muted">
+لوحة التحكم
+</p>
+
+<input
+id="password"
+class="input"
+type="password"
+placeholder="كلمة المرور">
+
+<button
+id="loginBtn"
+style="width:100%;margin-top:10px">
+
+دخول
+
+</button>
+
 <div id="loginMsg"></div>
+
 </section>
+
+
+<!-- DASHBOARD -->
 
 <section id="dash" class="hidden">
 
-<div style="display:flex;justify-content:space-between;align-items:center">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+
 <h1>⚙️ لوحة التحكم</h1>
-<button id="logoutBtn">تسجيل خروج</button>
+
+<button id="logoutBtn">
+تسجيل خروج
+</button>
+
 </div>
+
 
 <div id="msg" class="card"></div>
 
+
+<!-- BASIC DATA -->
+
 <div class="card">
+
 <h2>📞 البيانات</h2>
+
 <div class="grid">
-<label>اسم المكان<input id="siteName" class="input"></label>
-<label>التليفون<input id="phone" class="input"></label>
-<label>واتساب بدون +<input id="whatsapp" class="input"></label>
-<label>الشريط التعريفي<input id="announcement" class="input"></label>
-<label>العنوان<input id="address" class="input"></label>
-<label>تفاصيل العنوان<input id="addressLine" class="input"></label>
-<label style="grid-column:1/-1">Google Maps<input id="mapsQuery" class="input"></label>
-</div>
+
+<label>
+اسم المكان
+<input id="siteName" class="input">
+</label>
+
+<label>
+التليفون
+<input id="phone" class="input">
+</label>
+
+<label>
+واتساب بدون +
+<input id="whatsapp" class="input">
+</label>
+
+<label>
+الشريط التعريفي
+<input id="announcement" class="input">
+</label>
+
+<label>
+العنوان
+<input id="address" class="input">
+</label>
+
+<label>
+تفاصيل العنوان
+<input id="addressLine" class="input">
+</label>
+
+<label style="grid-column:1/-1">
+
+Google Maps
+
+<input
+id="mapsQuery"
+class="input">
+
+</label>
+
 </div>
 
+</div>
+
+
+<!-- WEEKLY OFFER -->
+
 <div class="card">
+
+<h2>🔥 عرض الأسبوع</h2>
+
+<label
+style="display:block;margin-bottom:15px">
+
+<input
+id="offerEnabled"
+type="checkbox"
+style="width:18px;height:18px;vertical-align:middle">
+
+ تفعيل العرض وإظهاره في الموقع
+
+</label>
+
+
+<label>
+
+عنوان العرض
+
+<input
+id="offerTitle"
+class="input"
+placeholder="عرض الأسبوع">
+
+</label>
+
+
+<label style="display:block;margin-top:12px">
+
+نص العرض
+
+<textarea
+id="offerText"
+class="input"
+placeholder="احجز 5 ساعات وخد ساعة إضافية مجانًا 🎮">
+</textarea>
+
+</label>
+
+
+<label style="display:block;margin-top:12px">
+
+ملاحظة العرض
+
+<input
+id="offerNote"
+class="input"
+placeholder="عرض لفترة محدودة">
+
+</label>
+
+
+<p class="muted">
+مثال: احجز 5 ساعات وخد ساعة إضافية مجانًا 🎮
+</p>
+
+
+<div class="offerPreview">
+
+<div
+id="previewTitle"
+class="offerPreviewTitle">
+
+🔥 عرض الأسبوع
+
+</div>
+
+<div
+id="previewText"
+class="offerPreviewText">
+
+احجز 5 ساعات وخد ساعة إضافية مجانًا 🎮
+
+</div>
+
+<div
+id="previewNote"
+class="muted">
+
+عرض لفترة محدودة
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- PRICES -->
+
+<div class="card">
+
 <h2>💰 الأسعار</h2>
-<div id="prices" class="prices"></div>
+
+<div
+id="prices"
+class="prices">
 </div>
 
+</div>
+
+
+<!-- IMAGES -->
+
 <div class="card">
+
 <h2>🖼️ الصور</h2>
-<input id="file" class="input" type="file" accept="image/*">
-<input id="alt" class="input" placeholder="وصف الصورة">
-<button id="uploadBtn" style="margin-top:10px">+ إضافة صورة</button>
-<div id="images" class="images" style="margin-top:15px"></div>
+
+<input
+id="file"
+class="input"
+type="file"
+accept="image/*">
+
+<input
+id="alt"
+class="input"
+placeholder="وصف الصورة">
+
+<button
+id="uploadBtn"
+style="margin-top:10px">
+
++ إضافة صورة
+
+</button>
+
+<div
+id="images"
+class="images"
+style="margin-top:15px">
 </div>
 
+</div>
+
+
+<!-- SAVE -->
+
 <div class="card">
-<button id="saveBtn">💾 حفظ التعديلات</button>
+
+<button id="saveBtn">
+💾 حفظ التعديلات
+</button>
+
 </div>
 
 </section>
+
 </div>
+
 
 <script>
-let state={config:{},images:[]};
-const $=id=>document.getElementById(id);
 
-function esc(x){
-return String(x||'').replace(/[&<>"']/g,m=>({
-'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-}[m]));
-}
-
-function show(t,ok=true){
-$('msg').innerHTML='<span class="'+(ok?'ok':'err')+'">'+esc(t)+'</span>';
-}
-async function login(){
-  let password=$('password').value.trim();
-
-  if(!password){
-    $('loginMsg').innerHTML='<p class="err">اكتب الباسورد</p>';
-    return;
-  }
-
-  $('loginBtn').disabled=true;
-  $('loginBtn').textContent='جاري الدخول...';
-
-  try{
-    let r=await fetch('/api/login',{
-      method:'POST',
-      headers:{'content-type':'application/json'},
-      body:JSON.stringify({password})
-    });
-
-    let text=await r.text();
-
-    let d;
-    try{ d=JSON.parse(text); }
-    catch(e){ d={error:text||'السيرفر لم يرجع بيانات'}; }
-
-    if(!r.ok){
-      $('loginMsg').innerHTML=
-        '<p class="err">خطأ '+r.status+': '+esc(d.error)+'</p>';
-      return;
-    }
-
-    await load();
-    $('login').classList.add('hidden');
-    $('dash').classList.remove('hidden');
-
-  }catch(e){
-    console.error(e);
-    $('loginMsg').innerHTML=
-      '<p class="err">خطأ الاتصال: '+esc(e.message)+'</p>';
-  }finally{
-    $('loginBtn').disabled=false;
-    $('loginBtn').textContent='دخول';
-  }
-}
-
-async function load(){
-let r=await fetch('/api/config');
-if(!r.ok)throw Error('load');
-state=await r.json();
-
-let c=state.config||{};
-['siteName','phone','whatsapp','announcement','address','addressLine','mapsQuery']
-.forEach(k=>$(k).value=c[k]||'');
-
-renderPrices(c.prices||[]);
-renderImages(state.images||[]);
-}
-
-function renderPrices(ps){
-$('prices').innerHTML=ps.map((p,i)=>`
-<div class="card">
-<b>الباقة ${i+1}</b>
-<input data-k="name" class="input" value="${esc(p.name)}" placeholder="اسم الباقة">
-<input data-k="hours" class="input" value="${esc(p.hours)}" placeholder="المدة">
-<input data-k="price" type="number" class="input" value="${Number(p.price)||0}" placeholder="السعر">
-</div>`).join('');
-}
-
-function renderImages(imgs){
-$('images').innerHTML=imgs.map(x=>`
-<div class="imgbox">
-<img src="${esc(x.url)}">
-<div>
-<small>${esc(x.alt)}</small><br>
-<button class="danger del" data-id="${x.id}">حذف</button>
-</div>
-</div>`).join('');
-
-document.querySelectorAll('.del').forEach(b=>
-b.onclick=()=>delImg(b.dataset.id)
-);
-}
-
-async function save(){
-try{
-let prices=[...document.querySelectorAll('.prices .card')].map(e=>({
-name:e.querySelector('[data-k=name]').value,
-hours:e.querySelector('[data-k=hours]').value,
-price:Number(e.querySelector('[data-k=price]').value||0)
-}));
-
-let data={
-siteName:$('siteName').value,
-phone:$('phone').value,
-whatsapp:$('whatsapp').value,
-announcement:$('announcement').value,
-address:$('address').value,
-addressLine:$('addressLine').value,
-mapsQuery:$('mapsQuery').value,
-prices
+let state={
+config:{},
+images:[]
 };
 
-let r=await fetch('/api/config',{
-method:'PUT',
-headers:{'content-type':'application/json'},
-body:JSON.stringify(data)
-});
+const $=
+id=>document.getElementById(id);
 
-show(r.ok?'تم الحفظ ✅':'فشل الحفظ',r.ok);
-}catch(e){show('حصل خطأ',false)}
+
+/* ESCAPE */
+
+function esc(x){
+
+return String(x||'')
+.replace(
+/[&<>"']/g,
+m=>({
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#39;'
+}[m])
+);
+
 }
+
+
+/* MESSAGE */
+
+function show(t,ok=true){
+
+$('msg').innerHTML=
+'<span class="'+
+(ok?'ok':'err')+
+'">'+
+esc(t)+
+'</span>';
+
+}
+
+
+/* LOGIN */
+
+async function login(){
+
+let password=
+$('password').value.trim();
+
+if(!password){
+
+$('loginMsg').innerHTML=
+'<p class="err">اكتب الباسورد</p>';
+
+return;
+
+}
+
+$('loginBtn').disabled=true;
+
+$('loginBtn').textContent=
+'جاري الدخول...';
+
+try{
+
+let r=
+await fetch(
+'/api/login',
+{
+method:'POST',
+headers:{
+'content-type':
+'application/json'
+},
+body:JSON.stringify({
+password
+})
+}
+);
+
+let text=
+await r.text();
+
+let d;
+
+try{
+
+d=JSON.parse(text);
+
+}catch(e){
+
+d={
+error:
+text||
+'السيرفر لم يرجع بيانات'
+};
+
+}
+
+
+if(!r.ok){
+
+$('loginMsg').innerHTML=
+'<p class="err">خطأ '+
+r.status+
+': '+
+esc(d.error)+
+'</p>';
+
+return;
+
+}
+
+
+await load();
+
+$('login').classList.add(
+'hidden'
+);
+
+$('dash').classList.remove(
+'hidden'
+);
+
+}catch(e){
+
+console.error(e);
+
+$('loginMsg').innerHTML=
+'<p class="err">خطأ الاتصال: '+
+esc(e.message)+
+'</p>';
+
+}finally{
+
+$('loginBtn').disabled=false;
+
+$('loginBtn').textContent=
+'دخول';
+
+}
+
+}
+
+
+/* LOAD */
+
+async function load(){
+
+let r=
+await fetch(
+'/api/config',
+{
+cache:'no-store'
+}
+);
+
+if(!r.ok){
+
+let text=
+await r.text()
+.catch(()=>'');
+
+throw Error(
+text||
+'load'
+);
+
+}
+
+state=
+await r.json();
+
+let c=
+state.config||
+{};
+
+
+/* BASIC FIELDS */
+
+[
+'siteName',
+'phone',
+'whatsapp',
+'announcement',
+'address',
+'addressLine',
+'mapsQuery'
+]
+.forEach(
+k=>
+$(k).value=
+c[k]||''
+);
+
+
+/* OFFER */
+
+let offer=
+c.offer||
+{
+enabled:true,
+title:'عرض الأسبوع',
+text:'احجز 5 ساعات وخد ساعة إضافية مجانًا 🎮',
+note:'عرض لفترة محدودة'
+};
+
+
+$('offerEnabled').checked=
+offer.enabled!==false;
+
+$('offerTitle').value=
+offer.title||'';
+
+$('offerText').value=
+offer.text||'';
+
+$('offerNote').value=
+offer.note||'';
+
+
+updateOfferPreview();
+
+
+/* PRICES */
+
+renderPrices(
+c.prices||[]
+);
+
+
+/* IMAGES */
+
+renderImages(
+state.images||[]
+);
+
+}
+
+
+/* OFFER PREVIEW */
+
+function updateOfferPreview(){
+
+let title=
+$('offerTitle').value.trim()||
+'عرض الأسبوع';
+
+let text=
+$('offerText').value.trim()||
+'احجز 5 ساعات وخد ساعة إضافية مجانًا 🎮';
+
+let note=
+$('offerNote').value.trim()||
+'عرض لفترة محدودة';
+
+
+$('previewTitle').textContent=
+'🔥 '+title;
+
+$('previewText').textContent=
+text;
+
+$('previewNote').textContent=
+note;
+
+}
+
+
+/* PRICES */
+
+function renderPrices(ps){
+
+$('prices').innerHTML=
+ps.map(
+(p,i)=>
+`
+<div class="card">
+
+<b>الباقة ${i+1}</b>
+
+<input
+data-k="name"
+class="input"
+value="${esc(p.name)}"
+placeholder="اسم الباقة">
+
+<input
+data-k="hours"
+class="input"
+value="${esc(p.hours)}"
+placeholder="المدة">
+
+<input
+data-k="price"
+type="number"
+class="input"
+value="${Number(p.price)||0}"
+placeholder="السعر">
+
+</div>
+`
+).join('');
+
+}
+
+
+/* IMAGES */
+
+function renderImages(imgs){
+
+$('images').innerHTML=
+imgs.map(
+x=>
+`
+<div class="imgbox">
+
+<img
+src="${esc(x.url)}"
+alt="${esc(x.alt)}">
+
+<div>
+
+<small>
+${esc(x.alt)}
+</small>
+
+<br>
+
+<button
+class="danger del"
+data-id="${x.id}">
+
+حذف
+
+</button>
+
+</div>
+
+</div>
+`
+).join('');
+
+
+document
+.querySelectorAll('.del')
+.forEach(
+b=>
+b.onclick=
+()=>delImg(b.dataset.id)
+);
+
+}
+
+
+/* SAVE */
+
+async function save(){
+
+try{
+
+let prices=
+[
+...document.querySelectorAll(
+'.prices .card'
+)
+]
+.map(
+e=>({
+
+name:
+e.querySelector(
+'[data-k=name]'
+).value,
+
+hours:
+e.querySelector(
+'[data-k=hours]'
+).value,
+
+price:
+Number(
+e.querySelector(
+'[data-k=price]'
+).value||0
+)
+
+})
+);
+
+
+let data={
+
+siteName:
+$('siteName').value,
+
+phone:
+$('phone').value,
+
+whatsapp:
+$('whatsapp').value,
+
+announcement:
+$('announcement').value,
+
+address:
+$('address').value,
+
+addressLine:
+$('addressLine').value,
+
+mapsQuery:
+$('mapsQuery').value,
+
+prices,
+
+offer:{
+
+enabled:
+$('offerEnabled').checked,
+
+title:
+$('offerTitle').value,
+
+text:
+$('offerText').value,
+
+note:
+$('offerNote').value
+
+}
+
+};
+
+
+let r=
+await fetch(
+'/api/config',
+{
+method:'PUT',
+headers:{
+'content-type':
+'application/json'
+},
+body:
+JSON.stringify(data)
+}
+);
+
+
+let text=
+await r.text();
+
+let d;
+
+try{
+
+d=JSON.parse(text);
+
+}catch(e){
+
+d={error:text};
+
+}
+
+
+if(!r.ok){
+
+show(
+d.error||
+'فشل الحفظ',
+false
+);
+
+return;
+
+}
+
+
+state.config=
+d.config||
+data;
+
+
+show(
+'تم حفظ التعديلات بنجاح ✅'
+);
+
+}catch(e){
+
+console.error(e);
+
+show(
+'حصل خطأ أثناء الحفظ: '+
+e.message,
+false
+);
+
+}
+
+}
+
+
+/* UPLOAD */
 
 async function upload(){
-let f=$('file').files[0];
-if(!f)return show('اختار صورة الأول',false);
-if(f.size>1048576)return show('الصورة أكبر من 1MB',false);
+
+let f=
+$('file').files[0];
+
+if(!f){
+
+show(
+'اختار صورة الأول',
+false
+);
+
+return;
+
+}
+
+
+if(f.size>1048576){
+
+show(
+'الصورة أكبر من 1MB',
+false
+);
+
+return;
+
+}
+
 
 try{
-let fd=new FormData();
-fd.append('file',f);
-fd.append('alt',$('alt').value||'4Gamerz Club');
 
-let r=await fetch('/api/images',{method:'POST',body:fd});
-let d=await r.json();
+let fd=
+new FormData();
 
-if(!r.ok)return show(d.error||'فشل الرفع',false);
+fd.append(
+'file',
+f
+);
+
+fd.append(
+'alt',
+$('alt').value||
+'4Gamerz Club'
+);
+
+
+let r=
+await fetch(
+'/api/images',
+{
+method:'POST',
+body:fd
+}
+);
+
+
+let text=
+await r.text();
+
+let d;
+
+try{
+
+d=JSON.parse(text);
+
+}catch(e){
+
+d={
+error:text
+};
+
+}
+
+
+if(!r.ok){
+
+show(
+d.error||
+'فشل الرفع',
+false
+);
+
+return;
+
+}
+
 
 $('file').value='';
+
 $('alt').value='';
+
 await load();
-show('تمت إضافة الصورة ✅');
-}catch(e){show('فشل رفع الصورة',false)}
+
+show(
+'تمت إضافة الصورة ✅'
+);
+
+}catch(e){
+
+console.error(e);
+
+show(
+'فشل رفع الصورة: '+
+e.message,
+false
+);
+
 }
+
+}
+
+
+/* DELETE IMAGE */
 
 async function delImg(id){
-if(!confirm('تحذف الصورة؟'))return;
+
+if(
+!confirm(
+'تحذف الصورة؟'
+)
+)
+return;
+
 
 try{
-let r=await fetch('/api/images/'+id,{method:'DELETE'});
-if(r.ok){await load();show('تم الحذف ✅')}
-else show('فشل الحذف',false);
-}catch(e){show('حصل خطأ',false)}
+
+let r=
+await fetch(
+'/api/images/'+id,
+{
+method:'DELETE'
 }
+);
+
+
+let text=
+await r.text();
+
+let d;
+
+try{
+
+d=JSON.parse(text);
+
+}catch(e){
+
+d={
+error:text
+};
+
+}
+
+
+if(r.ok){
+
+await load();
+
+show(
+'تم الحذف ✅'
+);
+
+}else{
+
+show(
+d.error||
+'فشل الحذف',
+false
+);
+
+}
+
+}catch(e){
+
+show(
+'حصل خطأ: '+
+e.message,
+false
+);
+
+}
+
+}
+
+
+/* LOGOUT */
 
 async function logout(){
-await fetch('/api/logout',{method:'POST'}).catch(()=>{});
+
+await fetch(
+'/api/logout',
+{
+method:'POST'
+}
+).catch(()=>{});
+
 location.reload();
+
 }
 
-$('loginBtn').onclick=login;
-$('password').onkeydown=e=>{if(e.key==='Enter')login()};
-$('saveBtn').onclick=save;
-$('uploadBtn').onclick=upload;
-$('logoutBtn').onclick=logout;
+
+/* EVENTS */
+
+$('loginBtn').onclick=
+login;
+
+
+$('password').onkeydown=
+e=>{
+
+if(e.key==='Enter')
+login();
+
+};
+
+
+$('saveBtn').onclick=
+save;
+
+
+$('uploadBtn').onclick=
+upload;
+
+
+$('logoutBtn').onclick=
+logout;
+
+
+/* LIVE OFFER PREVIEW */
+
+[
+'offerTitle',
+'offerText',
+'offerNote'
+]
+.forEach(
+id=>
+$(id).addEventListener(
+'input',
+updateOfferPreview
+)
+);
+
+
+/* ENTER LOGIN */
+
+$('password').focus();
+
 </script>
 
 </body>
