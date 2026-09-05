@@ -12,6 +12,3 @@ database_name = "4gamerz-club"
 database_id = "4731cdf5-da61-4da6-967f-d816ee03af8c" 
 migrations_dir = "migrations"
 
-[[r2_buckets]]
-binding = "IMAGES"
-bucket_name = "4gamerz-images"
