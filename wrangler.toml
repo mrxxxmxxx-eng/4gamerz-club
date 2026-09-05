@@ -1,0 +1,17 @@
+name = "4gamerz-club-admin"
+main = "worker.js"
+compatibility_date = "2026-09-05"
+
+[assets]
+directory = "./"
+not_found_handling = "single-page-application"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "4gamerz-club"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+migrations_dir = "migrations"
+
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "4gamerz-images"
