@@ -209,9 +209,29 @@ export default {
           )
           .all();
 
+        let config = {};
+
+        if (c && c.data) {
+          try {
+            config = JSON.parse(c.data);
+          } catch {
+            config = {};
+          }
+        }
+
+        // العرض الافتراضي لو مفيش عرض محفوظ
+        if (!config.offer) {
+          config.offer = {
+            enabled: true,
+            title: "عرض الأسبوع",
+            text: "احجز 5 ساعات وخد ساعة إضافية مجانًا 🎮",
+            note: "عرض لفترة محدودة"
+          };
+        }
+
         return json(
           {
-            config: c ? JSON.parse(c.data) : {},
+            config,
             images: r.results || []
           },
           200,
@@ -255,6 +275,57 @@ export default {
               }))
           : [];
 
+        // العرض
+        const oldConfigRow = await env.DB
+          .prepare(
+            "SELECT data FROM config WHERE id=1"
+          )
+          .first();
+
+        let oldConfig = {};
+
+        if (oldConfigRow && oldConfigRow.data) {
+          try {
+            oldConfig = JSON.parse(oldConfigRow.data);
+          } catch {
+            oldConfig = {};
+          }
+        }
+
+        const oldOffer = oldConfig.offer || {};
+
+        const offerInput =
+          d.offer && typeof d.offer === "object"
+            ? d.offer
+            : {};
+
+        const offer = {
+          enabled:
+            typeof offerInput.enabled === "boolean"
+              ? offerInput.enabled
+              : typeof oldOffer.enabled === "boolean"
+                ? oldOffer.enabled
+                : true,
+
+          title: String(
+            offerInput.title ??
+            oldOffer.title ??
+            "عرض الأسبوع"
+          ).slice(0, 100),
+
+          text: String(
+            offerInput.text ??
+            oldOffer.text ??
+            "احجز 5 ساعات وخد ساعة إضافية مجانًا 🎮"
+          ).slice(0, 300),
+
+          note: String(
+            offerInput.note ??
+            oldOffer.note ??
+            "عرض لفترة محدودة"
+          ).slice(0, 150)
+        };
+
         const clean = {
           siteName: String(
             d.siteName || "4Gamerz Club"
@@ -286,7 +357,9 @@ export default {
             d.mapsQuery || ""
           ).slice(0, 300),
 
-          prices
+          prices,
+
+          offer
         };
 
         await env.DB
