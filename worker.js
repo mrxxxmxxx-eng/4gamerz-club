@@ -1,355 +1,117 @@
-const json = (data, status = 200, headers = {}) =>
-  new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      "content-type": "application/json; charset=utf-8",
-      ...headers
-    }
-  });
+const json=(data,status=200,headers={})=>new Response(JSON.stringify(data),{status,headers:{"content-type":"application/json;charset=utf-8",...headers}});
 
-const b64u = (bytes) =>
-  btoa(String.fromCharCode(...new Uint8Array(bytes)))
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
+const b64u=b=>btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
 
-const fromB64u = (s) =>
-  Uint8Array.from(
-    atob(s.replace(/-/g, "+").replace(/_/g, "/") +
-      "=".repeat((4 - s.length % 4) % 4)),
-    c => c.charCodeAt(0)
-  );
-
-async function hmac(secret, text) {
-  const key = await crypto.subtle.importKey(
-    "raw",
-    new TextEncoder().encode(secret),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign", "verify"]
-  );
-  return crypto.subtle.sign(
-    "HMAC",
-    key,
-    new TextEncoder().encode(text)
-  );
+async function hmac(secret,text){
+const k=await crypto.subtle.importKey("raw",new TextEncoder().encode(secret),{name:"HMAC",hash:"SHA-256"},false,["sign","verify"]);
+return crypto.subtle.sign("HMAC",k,new TextEncoder().encode(text));
 }
 
-async function makeSession(secret) {
-  const body = `${Date.now()}:${crypto.randomUUID()}`;
-  return `${b64u(new TextEncoder().encode(body))}.${b64u(
-    await hmac(secret, body)
-  )}`;
+async function session(secret){
+const body=`${Date.now()}:${crypto.randomUUID()}`;
+return b64u(new TextEncoder().encode(body))+"."+b64u(await hmac(secret,body));
 }
 
-async function validSession(request, secret) {
-  const cookie = request.headers.get("Cookie") || "";
-  const match = cookie.match(/(?:^|; )session=([^;]+)/);
-
-  if (!match) return false;
-
-  const [payload, sig] = match[1].split(".");
-  if (!payload || !sig) return false;
-
-  try {
-    const body = new TextDecoder().decode(fromB64u(payload));
-    const [time] = body.split(":");
-
-    if (!time || Date.now() - Number(time) > 1000 * 60 * 60 * 12)
-      return false;
-
-    const key = await crypto.subtle.importKey(
-      "raw",
-      new TextEncoder().encode(secret),
-      { name: "HMAC", hash: "SHA-256" },
-      false,
-      ["verify"]
-    );
-
-    return crypto.subtle.verify(
-      "HMAC",
-      key,
-      fromB64u(sig),
-      new TextEncoder().encode(body)
-    );
-  } catch {
-    return false;
-  }
+async function admin(request,env){
+if(!env.ADMIN_PASSWORD||!env.SESSION_SECRET)return false;
+const c=request.headers.get("Cookie")||"";
+const m=c.match(/(?:^|; )session=([^;]+)/);
+if(!m)return false;
+try{
+const [p,s]=m[1].split(".");
+const pad=x=>"=".repeat((4-x.length%4)%4);
+const raw=atob(p.replace(/-/g,"+").replace(/_/g,"/")+pad(p));
+const body=new TextDecoder().decode(Uint8Array.from(raw,c=>c.charCodeAt(0)));
+const time=Number(body.split(":")[0]);
+if(!time||Date.now()-time>43200000)return false;
+const k=await crypto.subtle.importKey("raw",new TextEncoder().encode(env.SESSION_SECRET),{name:"HMAC",hash:"SHA-256"},false,["verify"]);
+const sig=atob(s.replace(/-/g,"+").replace(/_/g,"/")+pad(s));
+return crypto.subtle.verify("HMAC",k,Uint8Array.from(sig,c=>c.charCodeAt(0)),new TextEncoder().encode(body));
+}catch{return false}
 }
 
-async function requireAdmin(request, env) {
-  if (!env.ADMIN_PASSWORD || !env.SESSION_SECRET) return false;
-  return validSession(request, env.SESSION_SECRET);
+function img64(buffer){
+const a=new Uint8Array(buffer);
+let s="";
+for(let i=0;i<a.length;i+=32768)s+=String.fromCharCode(...a.subarray(i,i+32768));
+return btoa(s);
 }
 
-async function getConfig(env) {
-  const row = await env.DB
-    .prepare("SELECT data FROM config WHERE id=1")
-    .first();
+export default{
+async fetch(request,env){
+const url=new URL(request.url);
+const path=url.pathname;
 
-  return row ? JSON.parse(row.data) : {};
+if(path==="/api/login"&&request.method==="POST"){
+try{
+if(!env.ADMIN_PASSWORD)return json({error:"ADMIN_PASSWORD غير موجود"},500);
+if(!env.SESSION_SECRET)return json({error:"SESSION_SECRET غير موجود"},500);
+const d=await request.json();
+if(d.password!==env.ADMIN_PASSWORD)return json({error:"الباسورد غير صحيح"},401);
+const s=await session(env.SESSION_SECRET);
+return json({ok:true},200,{"set-cookie":`session=${s}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=43200`});
+}catch(e){return json({error:"LOGIN ERROR: "+e.message},500)}
 }
 
-async function getImages(env) {
-  const { results } = await env.DB
-    .prepare(
-      "SELECT id, object_key, url, alt, created_at FROM images ORDER BY id DESC"
-    )
-    .all();
+if(path==="/api/logout"&&request.method==="POST")
+return json({ok:true},200,{"set-cookie":"session=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0"});
 
-  return results || [];
+if(path==="/api/config"&&request.method==="GET"){
+try{
+if(!env.DB)return json({error:"D1 binding DB غير موجود"},500);
+const c=await env.DB.prepare("SELECT data FROM config WHERE id=1").first();
+const r=await env.DB.prepare("SELECT id,object_key,url,alt,created_at FROM images ORDER BY id DESC").all();
+return json({config:c?JSON.parse(c.data):{},images:r.results||[]},200,{"cache-control":"no-store"});
+}catch(e){return json({error:"CONFIG ERROR: "+e.message},500)}
 }
 
-function corsHeaders() {
-  return {
-    "cache-control": "no-store"
-  };
+if(path==="/api/config"&&request.method==="PUT"){
+if(!await admin(request,env))return json({error:"غير مصرح"},401);
+try{
+const d=await request.json();
+const prices=Array.isArray(d.prices)?d.prices.slice(0,12).map(p=>({name:String(p.name||""),hours:String(p.hours||""),price:Number(p.price||0)})):[];
+const clean={
+siteName:String(d.siteName||"4Gamerz Club").slice(0,100),
+phone:String(d.phone||"").slice(0,40),
+whatsapp:String(d.whatsapp||"").replace(/\D/g,"").slice(0,20),
+announcement:String(d.announcement||"").slice(0,100),
+address:String(d.address||"").slice(0,200),
+addressLine:String(d.addressLine||"").slice(0,200),
+mapsQuery:String(d.mapsQuery||"").slice(0,300),
+prices
+};
+await env.DB.prepare("UPDATE config SET data=?,updated_at=CURRENT_TIMESTAMP WHERE id=1").bind(JSON.stringify(clean)).run();
+return json({ok:true,config:clean});
+}catch(e){return json({error:"SAVE ERROR: "+e.message},500)}
 }
 
-function arrayBufferToBase64(buffer) {
-  const bytes = new Uint8Array(buffer);
-  let binary = "";
-  const chunk = 0x8000;
-
-  for (let i = 0; i < bytes.length; i += chunk) {
-    binary += String.fromCharCode(
-      ...bytes.subarray(i, Math.min(i + chunk, bytes.length))
-    );
-  }
-
-  return btoa(binary);
+if(path==="/api/images"&&request.method==="POST"){
+if(!await admin(request,env))return json({error:"غير مصرح"},401);
+try{
+const form=await request.formData();
+const f=form.get("file");
+if(!(f instanceof File))return json({error:"اختار صورة"},400);
+if(!f.type.startsWith("image/"))return json({error:"الملف لازم يكون صورة"},400);
+if(f.size>1048576)return json({error:"الحد الأقصى 1MB"},400);
+const data=`data:${f.type};base64,${img64(await f.arrayBuffer())}`;
+await env.DB.prepare("INSERT INTO images(object_key,url,alt) VALUES(?,?,?)").bind("gallery/"+crypto.randomUUID(),data,String(form.get("alt")||"4Gamerz Club")).run();
+return json({ok:true});
+}catch(e){return json({error:"UPLOAD ERROR: "+e.message},500)}
 }
 
-export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
-    const path = url.pathname;
+const match=path.match(/^\/api\/images\/(\d+)$/);
 
-    if (path === "/api/config" && request.method === "GET") {
-      return json(
-        {
-          config: await getConfig(env),
-          images: await getImages(env)
-        },
-        200,
-        corsHeaders()
-      );
-    }
+if(match&&request.method==="DELETE"){
+if(!await admin(request,env))return json({error:"غير مصرح"},401);
+try{
+await env.DB.prepare("DELETE FROM images WHERE id=?").bind(Number(match[1])).run();
+return json({ok:true});
+}catch(e){return json({error:"DELETE ERROR: "+e.message},500)}
+}
 
-    if (path === "/api/login" && request.method === "POST") {
-      try {
-        const { password } = await request.json();
+if(path==="/admin")
+return env.ASSETS.fetch(new Request(new URL("/admin.html",request.url),request));
 
-        if (
-          !env.ADMIN_PASSWORD ||
-          password !== env.ADMIN_PASSWORD
-        ) {
-          return json(
-            { ok: false, error: "الباسورد غير صحيح" },
-            401
-          );
-        }
-
-        const session = await makeSession(env.SESSION_SECRET);
-
-        return json(
-          { ok: true },
-          200,
-          {
-            "set-cookie":
-              `session=${session}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=43200`
-          }
-        );
-      } catch {
-        return json(
-          { ok: false, error: "طلب غير صالح" },
-          400
-        );
-      }
-    }
-
-    if (path === "/api/logout" && request.method === "POST") {
-      return json(
-        { ok: true },
-        200,
-        {
-          "set-cookie":
-            "session=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0"
-        }
-      );
-    }
-
-    if (path === "/api/config" && request.method === "PUT") {
-      if (!await requireAdmin(request, env)) {
-        return json({ error: "غير مصرح" }, 401);
-      }
-
-      try {
-        const data = await request.json();
-
-        const prices = Array.isArray(data.prices)
-          ? data.prices.map(p => ({
-              name: String(p.name || ""),
-              hours: String(p.hours || ""),
-              price: Number(p.price || 0)
-            }))
-          : [];
-
-        const clean = {
-          siteName: String(
-            data.siteName || "4Gamerz Club"
-          ).slice(0, 100),
-
-          phone: String(
-            data.phone || ""
-          ).slice(0, 40),
-
-          whatsapp: String(
-            data.whatsapp || ""
-          ).replace(/\D/g, "").slice(0, 20),
-
-          address: String(
-            data.address || ""
-          ).slice(0, 200),
-
-          addressLine: String(
-            data.addressLine || ""
-          ).slice(0, 200),
-
-          mapsQuery: String(
-            data.mapsQuery || ""
-          ).slice(0, 300),
-
-          announcement: String(
-            data.announcement || ""
-          ).slice(0, 100),
-
-          prices: prices.slice(0, 12)
-        };
-
-        await env.DB
-          .prepare(
-            "UPDATE config SET data=?, updated_at=CURRENT_TIMESTAMP WHERE id=1"
-          )
-          .bind(JSON.stringify(clean))
-          .run();
-
-        return json({
-          ok: true,
-          config: clean
-        });
-      } catch {
-        return json(
-          { error: "تعذر حفظ البيانات" },
-          400
-        );
-      }
-    }
-
-    if (path === "/api/images" && request.method === "POST") {
-      if (!await requireAdmin(request, env)) {
-        return json({ error: "غير مصرح" }, 401);
-      }
-
-      const form = await request.formData();
-      const file = form.get("file");
-
-      if (!(file instanceof File)) {
-        return json({ error: "اختار صورة" }, 400);
-      }
-
-      if (!file.type.startsWith("image/")) {
-        return json(
-          { error: "الملف لازم يكون صورة" },
-          400
-        );
-      }
-
-      if (file.size > 1024 * 1024) {
-        return json(
-          { error: "الحد الأقصى للصورة 1MB" },
-          400
-        );
-      }
-
-      const base64 = arrayBufferToBase64(
-        await file.arrayBuffer()
-      );
-
-      const dataUrl =
-        `data:${file.type};base64,${base64}`;
-
-      const key =
-        `gallery/${crypto.randomUUID()}`;
-
-      await env.DB
-        .prepare(
-          "INSERT INTO images (object_key,url,alt) VALUES (?,?,?)"
-        )
-        .bind(
-          key,
-          dataUrl,
-          String(
-            form.get("alt") || "4Gamerz Club"
-          )
-        )
-        .run();
-
-      return json({
-        ok: true,
-        url: dataUrl
-      });
-    }
-
-    const imageMatch =
-      path.match(/^\/api\/images\/(\d+)$/);
-
-    if (
-      imageMatch &&
-      request.method === "DELETE"
-    ) {
-      if (!await requireAdmin(request, env)) {
-        return json(
-          { error: "غير مصرح" },
-          401
-        );
-      }
-
-      const id = Number(imageMatch[1]);
-
-      const row = await env.DB
-        .prepare(
-          "SELECT id FROM images WHERE id=?"
-        )
-        .bind(id)
-        .first();
-
-      if (!row) {
-        return json(
-          { error: "الصورة غير موجودة" },
-          404
-        );
-      }
-
-      await env.DB
-        .prepare(
-          "DELETE FROM images WHERE id=?"
-        )
-        .bind(id)
-        .run();
-
-      return json({ ok: true });
-    }
-
-    if (path === "/admin") {
-      return env.ASSETS.fetch(
-        new Request(
-          new URL("/admin.html", request.url),
-          request
-        )
-      );
-    }
-
-    return env.ASSETS.fetch(request);
-  }
+return env.ASSETS.fetch(request);
+}
 };
