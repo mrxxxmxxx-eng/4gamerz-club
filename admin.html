@@ -1,22 +1,231 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>4Gamerz Admin</title><style>
-*{box-sizing:border-box}body{margin:0;background:#07070d;color:#f6f7ff;font-family:Arial,Tahoma,sans-serif}.wrap{max-width:1000px;margin:auto;padding:24px}.card{background:#11131b;border:1px solid #ffffff18;border-radius:20px;padding:22px;margin:15px 0}.login{max-width:420px;margin:10vh auto}.input,textarea,button{font:inherit}.input,textarea{width:100%;background:#090a11;color:white;border:1px solid #ffffff20;border-radius:10px;padding:12px;margin-top:7px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.btn{border:0;border-radius:10px;padding:11px 15px;cursor:pointer;background:#22d3ee;color:#041014;font-weight:800}.danger{background:#ef4444;color:white}.muted{color:#9a9cab;font-size:13px}.top{display:flex;justify-content:space-between;align-items:center;gap:10px}.hidden{display:none}.prices{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.price{border:1px solid #ffffff14;border-radius:14px;padding:12px}.images{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.imgbox{border:1px solid #ffffff15;border-radius:14px;overflow:hidden;background:#0b0c12}.imgbox img{width:100%;height:170px;object-fit:cover}.imgbox div{padding:10px}.status{padding:10px;border-radius:10px;background:#ffffff08;margin:10px 0}.ok{color:#31f7a4}.err{color:#ff7b7b}@media(max-width:700px){.grid,.prices,.images{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}}
-</style></head><body><main class="wrap">
-<section id="login" class="card login"><h1>🔐 4GAMERZ Admin</h1><p class="muted">لوحة التحكم الخاصة بصاحب الموقع.</p><input id="password" class="input" type="password" placeholder="كلمة المرور"><button class="btn" style="width:100%;margin-top:12px" onclick="adminLogin()">دخول</button><div id="loginMsg"></div></section>
-<section id="dash" class="hidden"><div class="top"><div><h1>⚙️ لوحة التحكم</h1><p class="muted">غيّر البيانات واحفظها، وستظهر للزوار.</p></div><button class="btn" onclick="logout()">تسجيل خروج</button></div><div id="msg" class="status"></div>
-<div class="card"><h2>📞 البيانات الأساسية</h2><div class="grid"><label>اسم المكان<input id="siteName" class="input"></label><label>رقم التليفون<input id="phone" class="input"></label><label>رقم واتساب بدون +<input id="whatsapp" class="input"></label><label>الشريط التعريفي<input id="announcement" class="input"></label><label>العنوان<input id="address" class="input"></label><label>تفاصيل العنوان<input id="addressLine" class="input"></label><label style="grid-column:1/-1">بحث Google Maps<input id="mapsQuery" class="input"></label></div></div>
-<div class="card"><h2>💰 الأسعار</h2><div id="prices" class="prices"></div></div>
-<div class="card"><h2>🖼️ صور المكان</h2><input id="file" class="input" type="file" accept="image/*"><input id="alt" class="input" placeholder="وصف الصورة (اختياري)"><button class="btn" style="margin-top:10px" onclick="upload()">+ إضافة صورة</button><div id="images" class="images" style="margin-top:15px"></div></div>
-<div class="card"><button class="btn" onclick="save()">💾 حفظ كل التعديلات</button></div></section></main>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>4Gamerz Admin</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#07070d;color:#fff;font-family:Arial;padding:20px}
+.wrap{max-width:900px;margin:auto}.card{background:#11131b;border:1px solid #ffffff18;border-radius:16px;padding:20px;margin:15px 0}
+input,button{font:inherit}.input{width:100%;background:#090a11;color:#fff;border:1px solid #ffffff20;border-radius:9px;padding:11px;margin-top:6px}
+button{border:0;border-radius:9px;padding:11px 16px;cursor:pointer;font-weight:bold;background:#22d3ee}.danger{background:#ef4444;color:#fff}
+.hidden{display:none}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.prices{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.images{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.imgbox{background:#090a11;border-radius:12px;overflow:hidden}.imgbox img{width:100%;height:150px;object-fit:cover}.imgbox div{padding:8px}
+.ok{color:#31f7a4}.err{color:#ff7777}.muted{color:#999;font-size:13px}
+@media(max-width:700px){.grid,.prices,.images{grid-template-columns:1fr}}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<section id="login" class="card">
+<h1>🔐 4GAMERZ Admin</h1>
+<p class="muted">لوحة التحكم</p>
+<input id="password" class="input" type="password" placeholder="كلمة المرور">
+<button id="loginBtn" style="width:100%;margin-top:10px">دخول</button>
+<div id="loginMsg"></div>
+</section>
+
+<section id="dash" class="hidden">
+
+<div style="display:flex;justify-content:space-between;align-items:center">
+<h1>⚙️ لوحة التحكم</h1>
+<button id="logoutBtn">تسجيل خروج</button>
+</div>
+
+<div id="msg" class="card"></div>
+
+<div class="card">
+<h2>📞 البيانات</h2>
+<div class="grid">
+<label>اسم المكان<input id="siteName" class="input"></label>
+<label>التليفون<input id="phone" class="input"></label>
+<label>واتساب بدون +<input id="whatsapp" class="input"></label>
+<label>الشريط التعريفي<input id="announcement" class="input"></label>
+<label>العنوان<input id="address" class="input"></label>
+<label>تفاصيل العنوان<input id="addressLine" class="input"></label>
+<label style="grid-column:1/-1">Google Maps<input id="mapsQuery" class="input"></label>
+</div>
+</div>
+
+<div class="card">
+<h2>💰 الأسعار</h2>
+<div id="prices" class="prices"></div>
+</div>
+
+<div class="card">
+<h2>🖼️ الصور</h2>
+<input id="file" class="input" type="file" accept="image/*">
+<input id="alt" class="input" placeholder="وصف الصورة">
+<button id="uploadBtn" style="margin-top:10px">+ إضافة صورة</button>
+<div id="images" class="images" style="margin-top:15px"></div>
+</div>
+
+<div class="card">
+<button id="saveBtn">💾 حفظ التعديلات</button>
+</div>
+
+</section>
+</div>
+
 <script>
-let state={config:{},images:[]};const $=id=>document.getElementById(id);function msg(t,ok=true){$('msg').innerHTML='<span class="'+(ok?'ok':'err')+'">'+t+'</span>'}
-async function  adminLogin(){const r=await fetch('/api/login',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({password:$('password').value})});const d=await r.json();if(!r.ok){$('loginMsg').innerHTML='<p class="err">'+(d.error||'فشل الدخول')+'</p>';return}await load();$('login').classList.add('hidden');$('dash').classList.remove('hidden')}
-async function logout(){await fetch('/api/logout',{method:'POST'});location.reload()}
-async function load(){const r=await fetch('/api/config');state=await r.json();const c=state.config||{};['siteName','phone','whatsapp','announcement','address','addressLine','mapsQuery'].forEach(k=>$(k).value=c[k]||'');renderPrices(c.prices||[]);renderImages(state.images||[])}
-function renderPrices(ps){$('prices').innerHTML=ps.map((p,i)=>`<div class="price"><label>الباقة ${i+1}<input data-p="${i}" data-k="name" class="input" value="${esc(p.name)}"></label><label>الوصف<input data-p="${i}" data-k="hours" class="input" value="${esc(p.hours)}"></label><label>السعر<input data-p="${i}" data-k="price" type="number" class="input" value="${Number(p.price)||0}"></label></div>`).join('')}
-function renderImages(imgs){$('images').innerHTML=imgs.map(x=>`<div class="imgbox"><img src="${x.url}"><div><small>${esc(x.alt)}</small><br><button class="btn danger" onclick="delImg(${x.id})">حذف</button></div></div>`).join('')}
-function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-async function save(){const prices=[...document.querySelectorAll('.price')].map((el,i)=>({name:el.querySelector('[data-k=name]').value,hours:el.querySelector('[data-k=hours]').value,price:Number(el.querySelector('[data-k=price]').value||0)}));const data={siteName:$('siteName').value,phone:$('phone').value,whatsapp:$('whatsapp').value,announcement:$('announcement').value,address:$('address').value,addressLine:$('addressLine').value,mapsQuery:$('mapsQuery').value,prices};const r=await fetch('/api/config',{method:'PUT',headers:{'content-type':'application/json'},body:JSON.stringify(data)});if(r.ok){msg('تم حفظ التعديلات ✅')}else msg('حصل خطأ أثناء الحفظ',false)}
-async function upload(){const f=$('file').files[0];if(!f)return msg('اختار صورة الأول',false);const fd=new FormData();fd.append('file',f);fd.append('alt',$('alt').value||'4Gamerz Club');const r=await fetch('/api/images',{method:'POST',body:fd});if(!r.ok){const d=await r.json();return msg(d.error||'فشل رفع الصورة',false)}$('file').value='';$('alt').value='';await load();msg('تمت إضافة الصورة ✅')}
-async function delImg(id){if(!confirm('تحذف الصورة؟'))return;const r=await fetch('/api/images/'+id,{method:'DELETE'});if(r.ok){await load();msg('تم حذف الصورة')}else msg('فشل الحذف',false)}
-load().then(()=>{}).catch(()=>{});
-</script></body></html>
+let state={config:{},images:[]};
+const $=id=>document.getElementById(id);
+
+function esc(x){
+return String(x||'').replace(/[&<>"']/g,m=>({
+'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+}[m]));
+}
+
+function show(t,ok=true){
+$('msg').innerHTML='<span class="'+(ok?'ok':'err')+'">'+esc(t)+'</span>';
+}
+
+async function login(){
+let password=$('password').value.trim();
+if(!password){$('loginMsg').innerHTML='<p class="err">اكتب الباسورد</p>';return}
+
+$('loginBtn').disabled=true;
+$('loginBtn').textContent='جاري الدخول...';
+
+try{
+let r=await fetch('/api/login',{
+method:'POST',
+headers:{'content-type':'application/json'},
+body:JSON.stringify({password})
+});
+let d=await r.json();
+
+if(!r.ok){
+$('loginMsg').innerHTML='<p class="err">'+esc(d.error||'الباسورد غلط')+'</p>';
+return;
+}
+
+await load();
+$('login').classList.add('hidden');
+$('dash').classList.remove('hidden');
+
+}catch(e){
+console.error(e);
+$('loginMsg').innerHTML='<p class="err">حصل خطأ في الاتصال</p>';
+}finally{
+$('loginBtn').disabled=false;
+$('loginBtn').textContent='دخول';
+}
+}
+
+async function load(){
+let r=await fetch('/api/config');
+if(!r.ok)throw Error('load');
+state=await r.json();
+
+let c=state.config||{};
+['siteName','phone','whatsapp','announcement','address','addressLine','mapsQuery']
+.forEach(k=>$(k).value=c[k]||'');
+
+renderPrices(c.prices||[]);
+renderImages(state.images||[]);
+}
+
+function renderPrices(ps){
+$('prices').innerHTML=ps.map((p,i)=>`
+<div class="card">
+<b>الباقة ${i+1}</b>
+<input data-k="name" class="input" value="${esc(p.name)}" placeholder="اسم الباقة">
+<input data-k="hours" class="input" value="${esc(p.hours)}" placeholder="المدة">
+<input data-k="price" type="number" class="input" value="${Number(p.price)||0}" placeholder="السعر">
+</div>`).join('');
+}
+
+function renderImages(imgs){
+$('images').innerHTML=imgs.map(x=>`
+<div class="imgbox">
+<img src="${esc(x.url)}">
+<div>
+<small>${esc(x.alt)}</small><br>
+<button class="danger del" data-id="${x.id}">حذف</button>
+</div>
+</div>`).join('');
+
+document.querySelectorAll('.del').forEach(b=>
+b.onclick=()=>delImg(b.dataset.id)
+);
+}
+
+async function save(){
+try{
+let prices=[...document.querySelectorAll('.prices .card')].map(e=>({
+name:e.querySelector('[data-k=name]').value,
+hours:e.querySelector('[data-k=hours]').value,
+price:Number(e.querySelector('[data-k=price]').value||0)
+}));
+
+let data={
+siteName:$('siteName').value,
+phone:$('phone').value,
+whatsapp:$('whatsapp').value,
+announcement:$('announcement').value,
+address:$('address').value,
+addressLine:$('addressLine').value,
+mapsQuery:$('mapsQuery').value,
+prices
+};
+
+let r=await fetch('/api/config',{
+method:'PUT',
+headers:{'content-type':'application/json'},
+body:JSON.stringify(data)
+});
+
+show(r.ok?'تم الحفظ ✅':'فشل الحفظ',r.ok);
+}catch(e){show('حصل خطأ',false)}
+}
+
+async function upload(){
+let f=$('file').files[0];
+if(!f)return show('اختار صورة الأول',false);
+if(f.size>1048576)return show('الصورة أكبر من 1MB',false);
+
+try{
+let fd=new FormData();
+fd.append('file',f);
+fd.append('alt',$('alt').value||'4Gamerz Club');
+
+let r=await fetch('/api/images',{method:'POST',body:fd});
+let d=await r.json();
+
+if(!r.ok)return show(d.error||'فشل الرفع',false);
+
+$('file').value='';
+$('alt').value='';
+await load();
+show('تمت إضافة الصورة ✅');
+}catch(e){show('فشل رفع الصورة',false)}
+}
+
+async function delImg(id){
+if(!confirm('تحذف الصورة؟'))return;
+
+try{
+let r=await fetch('/api/images/'+id,{method:'DELETE'});
+if(r.ok){await load();show('تم الحذف ✅')}
+else show('فشل الحذف',false);
+}catch(e){show('حصل خطأ',false)}
+}
+
+async function logout(){
+await fetch('/api/logout',{method:'POST'}).catch(()=>{});
+location.reload();
+}
+
+$('loginBtn').onclick=login;
+$('password').onkeydown=e=>{if(e.key==='Enter')login()};
+$('saveBtn').onclick=save;
+$('uploadBtn').onclick=upload;
+$('logoutBtn').onclick=logout;
+</script>
+
+</body>
+</html>
