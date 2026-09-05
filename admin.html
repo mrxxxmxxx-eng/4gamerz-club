@@ -82,38 +82,48 @@ return String(x||'').replace(/[&<>"']/g,m=>({
 function show(t,ok=true){
 $('msg').innerHTML='<span class="'+(ok?'ok':'err')+'">'+esc(t)+'</span>';
 }
-
 async function login(){
-let password=$('password').value.trim();
-if(!password){$('loginMsg').innerHTML='<p class="err">اكتب الباسورد</p>';return}
+  let password=$('password').value.trim();
 
-$('loginBtn').disabled=true;
-$('loginBtn').textContent='جاري الدخول...';
+  if(!password){
+    $('loginMsg').innerHTML='<p class="err">اكتب الباسورد</p>';
+    return;
+  }
 
-try{
-let r=await fetch('/api/login',{
-method:'POST',
-headers:{'content-type':'application/json'},
-body:JSON.stringify({password})
-});
-let d=await r.json();
+  $('loginBtn').disabled=true;
+  $('loginBtn').textContent='جاري الدخول...';
 
-if(!r.ok){
-$('loginMsg').innerHTML='<p class="err">'+esc(d.error||'الباسورد غلط')+'</p>';
-return;
-}
+  try{
+    let r=await fetch('/api/login',{
+      method:'POST',
+      headers:{'content-type':'application/json'},
+      body:JSON.stringify({password})
+    });
 
-await load();
-$('login').classList.add('hidden');
-$('dash').classList.remove('hidden');
+    let text=await r.text();
 
-}catch(e){
-console.error(e);
-$('loginMsg').innerHTML='<p class="err">حصل خطأ في الاتصال</p>';
-}finally{
-$('loginBtn').disabled=false;
-$('loginBtn').textContent='دخول';
-}
+    let d;
+    try{ d=JSON.parse(text); }
+    catch(e){ d={error:text||'السيرفر لم يرجع بيانات'}; }
+
+    if(!r.ok){
+      $('loginMsg').innerHTML=
+        '<p class="err">خطأ '+r.status+': '+esc(d.error)+'</p>';
+      return;
+    }
+
+    await load();
+    $('login').classList.add('hidden');
+    $('dash').classList.remove('hidden');
+
+  }catch(e){
+    console.error(e);
+    $('loginMsg').innerHTML=
+      '<p class="err">خطأ الاتصال: '+esc(e.message)+'</p>';
+  }finally{
+    $('loginBtn').disabled=false;
+    $('loginBtn').textContent='دخول';
+  }
 }
 
 async function load(){
