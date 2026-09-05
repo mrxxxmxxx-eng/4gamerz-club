@@ -1,108 +1,1277 @@
-<!doctype html><html lang="ar" dir="rtl"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>4Gamerz Club | PC Gaming</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Orbitron:wght@500;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css"></head><body>
-<div class="bg"></div><div class="grid"></div>
-<nav><a class="logo" href="#home"><b>4</b>GAMERZ<small>CLUB</small></a>
-<div class="links"><a href="#home">الرئيسية</a><a href="#experience">التجربة</a><a href="#games">الألعاب</a><a href="#prices">الأسعار</a><a href="#gallery">المكان</a><a href="#location">الموقع</a></div>
-<a class="book" href="#booking" data-booking="1">💬 احجز دلوقتي</a></nav>
 
-<section id="home" class="hero"><div class="heroimg"></div><div class="shade"></div><div class="heroText reveal">
-<div class="status"><i></i> PC GAMING • المنصورة</div><p class="eyebrow">WELCOME TO THE NEXT LEVEL</p>
-<h1>4GAMERZ <strong>CLUB</strong></h1><h2>مش مجرد لعب... <span>دي تجربة.</span></h2>
-<p class="desc">أجهزة قوية • إنترنت سريع • أجواء احترافية<br>كل اللي تحتاجه عشان تدخل الجيم وتنسى الوقت.</p>
-<div class="actions"><a class="primary" href="#booking" data-booking="1">💬 احجز عبر واتساب</a><a class="secondary" href="#prices">شوف الأسعار ↓</a></div>
-<div class="stats"><div><b>PC</b><small>Gaming Only</small></div><div><b>25<em> EGP</em></b><small>يبدأ من</small></div><div><b>24/7</b><small>Gaming Vibe</small></div></div>
-</div><div class="scroll">SCROLL<br>↓</div></section>
+<link rel="stylesheet" href="style.css">
 
-<section id="experience" class="section"><div class="title reveal"><p>WHY 4GAMERZ?</p><h2>تجربة <span>تفرق</span></h2></div>
-<div class="cards"><article class="card reveal"><div>⚡</div><h3>أداء عالي</h3><p>تجربة PC Gaming مصممة عشان تلعب براحتك وبتركيز.</p></article>
-<article class="card reveal"><div>🖥️</div><h3>أجهزة قوية</h3><p>Setup Gaming يخليك تدخل الماتش وأنت جاهز للمنافسة.</p></article>
-<article class="card reveal"><div>🌐</div><h3>إنترنت سريع</h3><p>اتصال سريع يساعدك تستمتع بالجيم بدون ما الجو يتعكر.</p></article>
-<article class="card reveal"><div>❄️</div><h3>جو احترافي</h3><p>مكان نظيف ومكيف وأجواء معمولة للاعبين.</p></article></div></section>
+<style>
+/* =========================
+   WEEKLY OFFER
+========================= */
 
-<section id="games" class="section"><div class="title reveal"><p>OUR GAME LIBRARY</p><h2>اختار <span>لعبتك</span></h2></div>
+.offerSection{
+  padding:35px 20px 15px;
+  position:relative;
+  z-index:5;
+}
+
+.offerBox{
+  max-width:900px;
+  margin:auto;
+  padding:30px 25px;
+  border-radius:24px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg,#171927,#0b0d16);
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:
+    0 0 25px rgba(255,59,48,.20),
+    0 0 70px rgba(255,59,48,.08);
+}
+
+.offerBox:before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius:24px;
+  padding:2px;
+  background:linear-gradient(
+    90deg,
+    #ff3b30,
+    #ff9f0a,
+    #ff3b30
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  pointer-events:none;
+}
+
+.offerBadge{
+  display:inline-block;
+  background:#ff3b30;
+  color:#fff;
+  padding:8px 18px;
+  border-radius:30px;
+  font-weight:900;
+  font-size:15px;
+  margin-bottom:12px;
+  box-shadow:0 0 22px rgba(255,59,48,.45);
+}
+
+.offerBox h2{
+  margin:5px 0 10px;
+  font-size:30px;
+  font-weight:900;
+  line-height:1.5;
+}
+
+.offerBox p{
+  margin:8px 0;
+  color:#ddd;
+  font-size:17px;
+}
+
+.offerNote{
+  color:#ffb347!important;
+  font-size:13px!important;
+  margin-top:12px!important;
+}
+
+.offerBtn{
+  display:inline-block;
+  margin-top:18px;
+  padding:13px 30px;
+  border-radius:12px;
+  background:#fff;
+  color:#111;
+  text-decoration:none;
+  font-weight:900;
+  transition:.25s;
+}
+
+.offerBtn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 30px rgba(255,255,255,.22);
+}
+
+@media(max-width:600px){
+  .offerSection{
+    padding:25px 14px 10px;
+  }
+
+  .offerBox{
+    padding:25px 16px;
+  }
+
+  .offerBox h2{
+    font-size:23px;
+  }
+
+  .offerBox p{
+    font-size:16px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+<div class="grid"></div>
+
+<nav>
+<a class="logo" href="#home">
+<b>4</b>GAMERZ<small>CLUB</small>
+</a>
+
+<div class="links">
+<a href="#home">الرئيسية</a>
+<a href="#experience">التجربة</a>
+<a href="#games">الألعاب</a>
+<a href="#prices">الأسعار</a>
+<a href="#gallery">المكان</a>
+<a href="#location">الموقع</a>
+</div>
+
+<a class="book" href="#booking" data-booking="1">💬 احجز دلوقتي</a>
+</nav>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section id="home" class="hero">
+
+<div class="heroimg"></div>
+<div class="shade"></div>
+
+<div class="heroText reveal">
+
+<div class="status">
+<i></i> PC GAMING • المنصورة
+</div>
+
+<p class="eyebrow">WELCOME TO THE NEXT LEVEL</p>
+
+<h1>
+4GAMERZ <strong>CLUB</strong>
+</h1>
+
+<h2>
+مش مجرد لعب... <span>دي تجربة.</span>
+</h2>
+
+<p class="desc">
+أجهزة قوية • إنترنت سريع • أجواء احترافية<br>
+كل اللي تحتاجه عشان تدخل الجيم وتنسى الوقت.
+</p>
+
+<div class="actions">
+<a class="primary" href="#booking" data-booking="1">
+💬 احجز عبر واتساب
+</a>
+
+<a class="secondary" href="#prices">
+شوف الأسعار ↓
+</a>
+</div>
+
+<div class="stats">
+
+<div>
+<b>PC</b>
+<small>Gaming Only</small>
+</div>
+
+<div>
+<b>25<em> EGP</em></b>
+<small>يبدأ من</small>
+</div>
+
+<div>
+<b>24/7</b>
+<small>Gaming Vibe</small>
+</div>
+
+</div>
+
+</div>
+
+<div class="scroll">
+SCROLL<br>↓
+</div>
+
+</section>
+
+
+<!-- =========================
+     WEEKLY OFFER
+========================= -->
+
+<section id="weeklyOffer" class="offerSection">
+
+<div class="offerBox reveal">
+
+<div class="offerBadge" id="offerTitle">
+🔥 عرض الأسبوع
+</div>
+
+<h2 id="offerText">
+احجز 5 ساعات وخد ساعة إضافية مجانًا 🎮
+</h2>
+
+<p class="offerNote" id="offerNote">
+عرض لفترة محدودة
+</p>
+
+<a
+href="#booking"
+class="offerBtn"
+data-booking="1"
+id="offerButton">
+احجز دلوقتي
+</a>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     EXPERIENCE
+========================= -->
+
+<section id="experience" class="section">
+
+<div class="title reveal">
+<p>WHY 4GAMERZ?</p>
+<h2>تجربة <span>تفرق</span></h2>
+</div>
+
+<div class="cards">
+
+<article class="card reveal">
+<div>⚡</div>
+<h3>أداء عالي</h3>
+<p>
+تجربة PC Gaming مصممة عشان تلعب براحتك وبتركيز.
+</p>
+</article>
+
+<article class="card reveal">
+<div>🖥️</div>
+<h3>أجهزة قوية</h3>
+<p>
+Setup Gaming يخليك تدخل الماتش وأنت جاهز للمنافسة.
+</p>
+</article>
+
+<article class="card reveal">
+<div>🌐</div>
+<h3>إنترنت سريع</h3>
+<p>
+اتصال سريع يساعدك تستمتع بالجيم بدون ما الجو يتعكر.
+</p>
+</article>
+
+<article class="card reveal">
+<div>❄️</div>
+<h3>جو احترافي</h3>
+<p>
+مكان نظيف ومكيف وأجواء معمولة للاعبين.
+</p>
+</article>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     GAMES
+========================= -->
+
+<section id="games" class="section">
+
+<div class="title reveal">
+<p>OUR GAME LIBRARY</p>
+<h2>اختار <span>لعبتك</span></h2>
+</div>
+
 <div class="games">
-<article class="game reveal"><img src="https://www.saudigamer.com/tachyon/sites/6/2020/07/valorant-key-art-uhdpaper.com-4K-7.2027-scaled.jpg" alt="Valorant"><div class="gameShade"></div><b>FPS</b><h3>VALORANT</h3><small>CLUTCH • AIM • WIN</small></article>
-<article class="game reveal"><img src="https://images.ctfassets.net/w5r1fvmogo3f/4WSBW9ID2udDKXZWozTI7o/b99e06aea87c97778d5d1601f99bff37/pubg_newkeyart2022_9e036274ad3946d0a47b0d77b0126574.jpg" alt="PUBG"><div class="gameShade"></div><b>BATTLE ROYALE</b><h3>PUBG</h3><small>DROP • SURVIVE • WIN</small></article>
-<article class="game reveal"><img src="https://ogre.natalie.mu/media/news/music/2020/0731/Fortnite_keyart.jpg?imdensity=1&imwidth=750" alt="Fortnite"><div class="gameShade"></div><b>BATTLE ROYALE</b><h3>FORTNITE</h3><small>BUILD • FIGHT • WIN</small></article>
-<article class="game reveal"><img src="https://media.pocketgamer.com/artwork/na-30551-1577124491/garena-free-fire-ios-artwork-key-art.jpg" alt="Free Fire"><div class="gameShade"></div><b>BATTLE ROYALE</b><h3>FREE FIRE</h3><small>DROP • SURVIVE • BOOYAH</small></article>
-<article class="game reveal"><img src="https://cdn.cloudflare.steamstatic.com/apps/csgo/images/csgo_react/cs2/header_bg.svg" alt="Counter-Strike 2"><div class="gameShade"></div><b>FPS</b><h3>COUNTER-STRIKE 2</h3><small>AIM • TACTICS • CLUTCH</small></article>
-<article class="game reveal"><img src="https://content.konzolvilag.hu/dynamic_landings/spider-man/spider-man-cover.jpg" alt="Spider-Man"><div class="gameShade"></div><b>ACTION</b><h3>SPIDER-MAN</h3><small>SWING • FIGHT • EXPLORE</small></article>
-<article class="game reveal"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/f8e9fc134229969.61d1f28358e29.jpg" alt="Uncharted Legacy of Thieves"><div class="gameShade"></div><b>ADVENTURE</b><h3>UNCHARTED</h3><small>EXPLORE • ADVENTURE</small></article>
-<article class="game reveal"><img src="https://promart.vteximg.com.br/arquivos/ids/6508906/imageUrl_1.jpg?v=637977057329530000" alt="The Last of Us"><div class="gameShade"></div><b>STORY</b><h3>THE LAST OF US</h3><small>SURVIVE • DISCOVER</small></article>
-<article class="game reveal"><img src="https://cdn.mos.cms.futurecdn.net/v2/t%3A0%2Cl%3A448%2Ccw%3A1152%2Cch%3A1152%2Cq%3A80%2Cw%3A1152/rpPGiw7RjFaeJCCDBC4Bna.jpg" alt="Minecraft"><div class="gameShade"></div><b>SANDBOX</b><h3>MINECRAFT</h3><small>BUILD • CREATE • EXPLORE</small></article>
-<article class="game reveal"><img src="https://i.gzn.jp/img/2017/09/29/league-of-legends/00.jpg" alt="League of Legends"><div class="gameShade"></div><b>MOBA</b><h3>LEAGUE OF LEGENDS</h3><small>TEAM • STRATEGY • WIN</small></article>
-</div><p class="note">قائمة الألعاب قابلة للتعديل حسب الألعاب الموجودة فعليًا في النادي.</p></section>
 
-<section id="prices" class="section"><div class="title reveal"><p>CHOOSE YOUR TIME</p><h2>أسعار <span>اللعب</span></h2></div>
+<article class="game reveal">
+<img src="https://www.saudigamer.com/tachyon/sites/6/2020/07/valorant-key-art-uhdpaper.com-4K-7.2027-scaled.jpg" alt="Valorant">
+<div class="gameShade"></div>
+<b>FPS</b>
+<h3>VALORANT</h3>
+<small>CLUTCH • AIM • WIN</small>
+</article>
+
+<article class="game reveal">
+<img src="https://images.ctfassets.net/w5r1fvmogo3f/4WSBW9ID2udDKXZWozTI7o/b99e06aea87c97778d5d1601f99bff37/pubg_newkeyart2022_9e036274ad3946d0a47b0d77b0126574.jpg" alt="PUBG">
+<div class="gameShade"></div>
+<b>BATTLE ROYALE</b>
+<h3>PUBG</h3>
+<small>DROP • SURVIVE • WIN</small>
+</article>
+
+<article class="game reveal">
+<img src="https://ogre.natalie.mu/media/news/music/2020/0731/Fortnite_keyart.jpg?imdensity=1&imwidth=750" alt="Fortnite">
+<div class="gameShade"></div>
+<b>BATTLE ROYALE</b>
+<h3>FORTNITE</h3>
+<small>BUILD • FIGHT • WIN</small>
+</article>
+
+<article class="game reveal">
+<img src="https://media.pocketgamer.com/artwork/na-30551-1577124491/garena-free-fire-ios-artwork-key-art.jpg" alt="Free Fire">
+<div class="gameShade"></div>
+<b>BATTLE ROYALE</b>
+<h3>FREE FIRE</h3>
+<small>DROP • SURVIVE • BOOYAH</small>
+</article>
+
+<article class="game reveal">
+<img src="https://cdn.cloudflare.steamstatic.com/apps/csgo/images/csgo_react/cs2/header_bg.svg" alt="Counter-Strike 2">
+<div class="gameShade"></div>
+<b>FPS</b>
+<h3>COUNTER-STRIKE 2</h3>
+<small>AIM • TACTICS • CLUTCH</small>
+</article>
+
+<article class="game reveal">
+<img src="https://content.konzolvilag.hu/dynamic_landings/spider-man/spider-man-cover.jpg" alt="Spider-Man">
+<div class="gameShade"></div>
+<b>ACTION</b>
+<h3>SPIDER-MAN</h3>
+<small>SWING • FIGHT • EXPLORE</small>
+</article>
+
+<article class="game reveal">
+<img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/f8e9fc134229969.61d1f28358e29.jpg" alt="Uncharted Legacy of Thieves">
+<div class="gameShade"></div>
+<b>ADVENTURE</b>
+<h3>UNCHARTED</h3>
+<small>EXPLORE • ADVENTURE</small>
+</article>
+
+<article class="game reveal">
+<img src="https://promart.vteximg.com.br/arquivos/ids/6508906/imageUrl_1.jpg?v=637977057329530000" alt="The Last of Us">
+<div class="gameShade"></div>
+<b>STORY</b>
+<h3>THE LAST OF US</h3>
+<small>SURVIVE • DISCOVER</small>
+</article>
+
+<article class="game reveal">
+<img src="https://cdn.mos.cms.futurecdn.net/v2/t%3A0%2Cl%3A448%2Ccw%3A1152%2Cch%3A1152%2Cq%3A80%2Cw%3A1152/rpPGiw7RjFaeJCCDBC4Bna.jpg" alt="Minecraft">
+<div class="gameShade"></div>
+<b>SANDBOX</b>
+<h3>MINECRAFT</h3>
+<small>BUILD • CREATE • EXPLORE</small>
+</article>
+
+<article class="game reveal">
+<img src="https://i.gzn.jp/img/2017/09/29/league-of-legends/00.jpg" alt="League of Legends">
+<div class="gameShade"></div>
+<b>MOBA</b>
+<h3>LEAGUE OF LEGENDS</h3>
+<small>TEAM • STRATEGY • WIN</small>
+</article>
+
+</div>
+
+<p class="note">
+قائمة الألعاب قابلة للتعديل حسب الألعاب الموجودة فعليًا في النادي.
+</p>
+
+</section>
+
+
+<!-- =========================
+     PRICES
+========================= -->
+
+<section id="prices" class="section">
+
+<div class="title reveal">
+<p>CHOOSE YOUR TIME</p>
+<h2>أسعار <span>اللعب</span></h2>
+</div>
+
 <div class="prices">
-<div class="price reveal"><i>🎮</i><h3>ساعة</h3><strong>25 <small>EGP</small></strong><p>ساعة لعب PC</p><a href="#booking" data-booking="1" data-package="ساعة - 25 جنيه">احجز الآن</a></div>
-<div class="price reveal"><i>🔥</i><h3>3 ساعات</h3><strong>60 <small>EGP</small></strong><p>3 ساعات لعب PC</p><a href="#booking" data-booking="1" data-package="3 ساعات - 60 جنيه">احجز الآن</a></div>
-<div class="price popular reveal"><label>الأكثر طلباً</label><i>⚡</i><h3>5 ساعات</h3><strong>100 <small>EGP</small></strong><p>5 ساعات لعب PC</p><a href="#booking" data-booking="1" data-package="5 ساعات - 100 جنيه">احجز الآن</a></div>
-<div class="price reveal"><i>👑</i><h3>12 ساعة</h3><strong>240 <small>EGP</small></strong><p>12 ساعة لعب PC</p><a href="#booking" data-booking="1" data-package="12 ساعة - 240 جنيه">احجز الآن</a></div></div></section>
 
-<section class="cta reveal"><p>READY PLAYER ONE?</p><h2>جاهز للجيم؟ 🔥</h2><p>احجز مكانك دلوقتي وخلي الماتش يبدأ.</p>
-<a href="#booking" data-booking="1">💬 احجز دلوقتي على WhatsApp</a></section>
+<div class="price reveal">
+<i>🎮</i>
+<h3>ساعة</h3>
+<strong>25 <small>EGP</small></strong>
+<p>ساعة لعب PC</p>
+<a href="#booking" data-booking="1" data-package="ساعة - 25 جنيه">
+احجز الآن
+</a>
+</div>
 
-<section id="gallery" class="section"><div class="title reveal"><p>INSIDE 4GAMERZ</p><h2>شوف <span>المكان</span></h2></div>
-<div class="gallery"><div class="photo reveal"><img src="images/club.jpeg" alt="4Gamerz Club gaming setup"><span>YOUR NEXT GAMING SESSION</span></div>
-<div class="mini"><div>🎧<b>Gaming Vibe</b><small>عيش أجواء اللعب</small></div><div>🏆<b>Compete</b><small>نافس صحابك</small></div><div>🔥<b>Have Fun</b><small>استمتع بوقتك</small></div></div></div></section>
+<div class="price reveal">
+<i>🔥</i>
+<h3>3 ساعات</h3>
+<strong>60 <small>EGP</small></strong>
+<p>3 ساعات لعب PC</p>
+<a href="#booking" data-booking="1" data-package="3 ساعات - 60 جنيه">
+احجز الآن
+</a>
+</div>
 
-<section id="location" class="section"><div class="title reveal"><p>FIND US</p><h2>موقع <span>4GAMERZ</span></h2></div>
-<div class="location reveal"><div class="pin">📍</div><div><h3>4Gamerz Club</h3><p>المنصورة - حي الجامعة</p><strong>٧ شارع حلواني الرضا</strong><div class="locBtns">
-<a href="https://www.google.com/maps/search/?api=1&query=7%20شارع%20حلواني%20الرضا%20حي%20الجامعة%20المنصورة" target="_blank">📍 افتح Google Maps</a>
-<a href="https://wa.me/201068300677?text=السلام%20عليكم%20محتاج%20موقع%204Gamerz%20Club" target="_blank">💬 اسألنا</a></div></div></div></section>
+<div class="price popular reveal">
+<label>الأكثر طلباً</label>
+<i>⚡</i>
+<h3>5 ساعات</h3>
+<strong>100 <small>EGP</small></strong>
+<p>5 ساعات لعب PC</p>
+<a href="#booking" data-booking="1" data-package="5 ساعات - 100 جنيه">
+احجز الآن
+</a>
+</div>
 
-<section class="section contact"><div class="contactbox reveal"><p>CONTACT US</p><h2>تواصل <span>معانا</span></h2><p>للحجز والاستفسار</p><div class="contactBtns">
-<a href="https://wa.me/201068300677" target="_blank">💬 WhatsApp<small>+20 106 830 0677</small></a><a href="tel:+201068300677">📞 اتصال<small>+20 106 830 0677</small></a></div></div></section>
-<footer><div><b>4</b>GAMERZ <small>CLUB</small></div><p>PLAY • COMPETE • DOMINATE</p><hr><small>© 2026 4Gamerz Club — جميع الحقوق محفوظة</small></footer>
-<a href="/admin" style="position:fixed;right:14px;bottom:14px;z-index:31;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#11131b;border:1px solid #fff2;color:#aaa;font-size:14px" title="Admin">⚙</a><a class="float" href="#booking" data-booking="1">💬<span>احجز</span></a>
+<div class="price reveal">
+<i>👑</i>
+<h3>12 ساعة</h3>
+<strong>240 <small>EGP</small></strong>
+<p>12 ساعة لعب PC</p>
+<a href="#booking" data-booking="1" data-package="12 ساعة - 240 جنيه">
+احجز الآن
+</a>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CTA -->
+
+<section class="cta reveal">
+
+<p>READY PLAYER ONE?</p>
+
+<h2>
+جاهز للجيم؟ 🔥
+</h2>
+
+<p>
+احجز مكانك دلوقتي وخلي الماتش يبدأ.
+</p>
+
+<a href="#booking" data-booking="1">
+💬 احجز دلوقتي على WhatsApp
+</a>
+
+</section>
+
+
+<!-- GALLERY -->
+
+<section id="gallery" class="section">
+
+<div class="title reveal">
+<p>INSIDE 4GAMERZ</p>
+<h2>شوف <span>المكان</span></h2>
+</div>
+
+<div class="gallery">
+
+<div class="photo reveal">
+<img src="images/club.jpeg" alt="4Gamerz Club gaming setup">
+<span>YOUR NEXT GAMING SESSION</span>
+</div>
+
+<div class="mini">
+
+<div>
+🎧
+<b>Gaming Vibe</b>
+<small>عيش أجواء اللعب</small>
+</div>
+
+<div>
+🏆
+<b>Compete</b>
+<small>نافس صحابك</small>
+</div>
+
+<div>
+🔥
+<b>Have Fun</b>
+<small>استمتع بوقتك</small>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- LOCATION -->
+
+<section id="location" class="section">
+
+<div class="title reveal">
+<p>FIND US</p>
+<h2>موقع <span>4GAMERZ</span></h2>
+</div>
+
+<div class="location reveal">
+
+<div class="pin">📍</div>
+
+<div>
+
+<h3>4Gamerz Club</h3>
+
+<p>
+المنصورة - حي الجامعة
+</p>
+
+<strong>
+٧ شارع حلواني الرضا
+</strong>
+
+<div class="locBtns">
+
+<a
+href="https://www.google.com/maps/search/?api=1&query=7%20شارع%20حلواني%20الرضا%20حي%20الجامعة%20المنصورة"
+target="_blank">
+📍 افتح Google Maps
+</a>
+
+<a
+href="https://wa.me/201068300677?text=السلام%20عليكم%20محتاج%20موقع%204Gamerz%20Club"
+target="_blank">
+💬 اسألنا
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CONTACT -->
+
+<section class="section contact">
+
+<div class="contactbox reveal">
+
+<p>CONTACT US</p>
+
+<h2>
+تواصل <span>معانا</span>
+</h2>
+
+<p>
+للحجز والاستفسار
+</p>
+
+<div class="contactBtns">
+
+<a href="https://wa.me/201068300677" target="_blank">
+💬 WhatsApp
+<small>+20 106 830 0677</small>
+</a>
+
+<a href="tel:+201068300677">
+📞 اتصال
+<small>+20 106 830 0677</small>
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+<div>
+<b>4</b>GAMERZ <small>CLUB</small>
+</div>
+
+<p>
+PLAY • COMPETE • DOMINATE
+</p>
+
+<hr>
+
+<small>
+© 2026 4Gamerz Club — جميع الحقوق محفوظة
+</small>
+
+</footer>
+
+
+<!-- ADMIN -->
+
+<a
+href="/admin"
+style="
+position:fixed;
+right:14px;
+bottom:14px;
+z-index:31;
+width:34px;
+height:34px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#11131b;
+border:1px solid #fff2;
+color:#aaa;
+font-size:14px"
+title="Admin">
+⚙
+</a>
+
+
+<a class="float" href="#booking" data-booking="1">
+💬<span>احجز</span>
+</a>
+
+
+<!-- BOOKING MODAL -->
 
 <div id="booking" class="bookingModal" aria-hidden="true">
-  <div class="bookingCard" role="dialog" aria-modal="true" aria-labelledby="bookingTitle">
-    <button class="closeBooking" type="button" aria-label="إغلاق">×</button>
-    <p class="bookingEyebrow">4GAMERZ BOOKING</p>
-    <h2 id="bookingTitle">احجز <span>مكانك</span> 🎮</h2>
-    <p class="bookingHint">اكتب بياناتك وهنفتح واتساب برسالة جاهزة بكل تفاصيل الحجز.</p>
-    <form id="bookingForm">
-      <label>الاسم<input id="bookingName" required type="text" placeholder="اكتب اسمك"></label>
-      <label>رقم التليفون<input id="bookingPhone" required type="tel" inputmode="tel" placeholder="01xxxxxxxxx"></label>
-      <label>الباقة<select id="bookingPackage" required><option value="">اختار الباقة</option><option>ساعة - 25 جنيه</option><option>3 ساعات - 60 جنيه</option><option>5 ساعات - 100 جنيه</option><option>12 ساعة - 240 جنيه</option></select></label>
-      <div class="bookingRow"><label>التاريخ<input id="bookingDate" required type="date"></label><label>المعاد<input id="bookingTime" required type="time"></label></div>
-      <button class="sendBooking" type="submit">💬 إرسال تفاصيل الحجز على واتساب</button>
-    </form>
-    <small class="bookingNote">ملاحظة: واتساب هيفتح برسالة جاهزة، وتحتاج تضغط «إرسال» من واتساب لتأكيد الإرسال.</small>
-  </div>
+
+<div
+class="bookingCard"
+role="dialog"
+aria-modal="true"
+aria-labelledby="bookingTitle">
+
+<button
+class="closeBooking"
+type="button"
+aria-label="إغلاق">
+×
+</button>
+
+<p class="bookingEyebrow">
+4GAMERZ BOOKING
+</p>
+
+<h2 id="bookingTitle">
+احجز <span>مكانك</span> 🎮
+</h2>
+
+<p class="bookingHint">
+اكتب بياناتك وهنفتح واتساب برسالة جاهزة بكل تفاصيل الحجز.
+</p>
+
+<form id="bookingForm">
+
+<label>
+الاسم
+<input
+id="bookingName"
+required
+type="text"
+placeholder="اكتب اسمك">
+</label>
+
+<label>
+رقم التليفون
+<input
+id="bookingPhone"
+required
+type="tel"
+inputmode="tel"
+placeholder="01xxxxxxxxx">
+</label>
+
+<label>
+الباقة
+
+<select id="bookingPackage" required>
+
+<option value="">
+اختار الباقة
+</option>
+
+<option>
+ساعة - 25 جنيه
+</option>
+
+<option>
+3 ساعات - 60 جنيه
+</option>
+
+<option>
+5 ساعات - 100 جنيه
+</option>
+
+<option>
+12 ساعة - 240 جنيه
+</option>
+
+</select>
+
+</label>
+
+<div class="bookingRow">
+
+<label>
+التاريخ
+<input
+id="bookingDate"
+required
+type="date">
+</label>
+
+<label>
+المعاد
+<input
+id="bookingTime"
+required
+type="time">
+</label>
+
 </div>
-<script>
-const o=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.12});document.querySelectorAll('.reveal').forEach(e=>o.observe(e));
-const modal=document.getElementById('booking'), form=document.getElementById('bookingForm'), pkg=document.getElementById('bookingPackage');
-const openBooking=(selected)=>{modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.classList.add('modalOpen');if(selected)pkg.value=selected;setTimeout(()=>document.getElementById('bookingName').focus(),100)};
-document.querySelectorAll('[data-booking]').forEach(btn=>btn.addEventListener('click',e=>{e.preventDefault();openBooking(btn.dataset.package||'')}));
-function closeBooking(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.classList.remove('modalOpen')}
-document.querySelector('.closeBooking').addEventListener('click',closeBooking);modal.addEventListener('click',e=>{if(e.target===modal)closeBooking()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeBooking()});
-form.addEventListener('submit',e=>{e.preventDefault();const name=document.getElementById('bookingName').value.trim(),phone=document.getElementById('bookingPhone').value.trim(),date=document.getElementById('bookingDate').value,time=document.getElementById('bookingTime').value,choice=pkg.value;if(!/^01[0-9]{9}$/.test(phone.replace(/[\s-]/g,''))){alert('اكتب رقم موبايل مصري صحيح 11 رقم، مثال: 01012345678');return}const msg=`السلام عليكم، عايز أعمل حجز في 4Gamerz Club 🎮%0A%0Aالاسم: ${name}%0Aرقم التليفون: ${phone}%0Aالباقة: ${choice}%0Aالتاريخ: ${date}%0Aالمعاد: ${time}%0A%0Aمستني تأكيد الحجز، شكراً ❤️`;window.open('https://wa.me/201068300677?text='+msg,'_blank');});
-</script>
+
+<button
+class="sendBooking"
+type="submit">
+💬 إرسال تفاصيل الحجز على واتساب
+</button>
+
+</form>
+
+<small class="bookingNote">
+ملاحظة: واتساب هيفتح برسالة جاهزة، وتحتاج تضغط «إرسال» من واتساب لتأكيد الإرسال.
+</small>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     BOOKING SCRIPT
+========================= -->
 
 <script>
-(async function(){
- try{
-  const r=await fetch('/api/config'); if(!r.ok)return; const {config:c,images=[]}=await r.json();
-  const wa=(c.whatsapp||'').replace(/\D/g,'');
-  document.title=(c.siteName||'4Gamerz Club')+' | PC Gaming';
-  document.querySelector('.status')?.replaceChildren(document.createTextNode(c.announcement||'PC GAMING • المنصورة'));
-  const loc=document.querySelector('#location .location'); if(loc){const ps=loc.querySelectorAll('p'); if(ps[0])ps[0].textContent=c.address||''; const st=loc.querySelector('strong'); if(st)st.textContent=c.addressLine||''; const map=loc.querySelector('.locBtns a'); if(map)map.href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(c.mapsQuery||c.address||'');}
-  document.querySelectorAll('a[href*="wa.me/"]').forEach(a=>{a.href='https://wa.me/'+wa+(a.href.includes('?text=')?'?text='+encodeURIComponent('السلام عليكم، محتاج معلومات عن 4Gamerz Club'):'');});
-  document.querySelectorAll('a[href^="tel:"]').forEach(a=>a.href='tel:'+c.phone);
-  document.querySelectorAll('.contactBtns small').forEach(x=>x.textContent=c.phone||'');
-  const cards=[...document.querySelectorAll('.price')]; (c.prices||[]).forEach((p,i)=>{const el=cards[i];if(!el)return;el.querySelector('h3').textContent=p.name;el.querySelector('strong').innerHTML=p.price+' <small>EGP</small>';el.querySelector('p').textContent=p.hours;const a=el.querySelector('a');if(a)a.dataset.package=p.name+' - '+p.price+' جنيه';});
-  const selects=[...document.querySelectorAll('#bookingPackage option')]; (c.prices||[]).forEach((p,i)=>{if(selects[i+1]){selects[i+1].textContent=p.name+' - '+p.price+' جنيه';selects[i+1].value=p.name+' - '+p.price+' جنيه';}});
-  const gallery=document.querySelector('.gallery .photo'); if(gallery && images.length){gallery.querySelector('img').src=images[0].url;gallery.querySelector('img').alt=images[0].alt||'4Gamerz Club';}
-  const mini=document.querySelector('.gallery'); if(mini && images.length>1){let extra=document.querySelector('.adminGalleryExtra');if(!extra){extra=document.createElement('div');extra.className='adminGalleryExtra';extra.style.cssText='display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px';mini.parentNode.appendChild(extra)}extra.innerHTML=images.slice(1).map(x=>`<div style="height:260px;border-radius:18px;overflow:hidden;border:1px solid #fff1"><img src="${x.url}" alt="${String(x.alt||'4Gamerz').replace(/"/g,'&quot;')}" style="width:100%;height:100%;object-fit:cover"></div>`).join('');}
- }catch(e){}
-})();
+
+const o=new IntersectionObserver(
+es=>es.forEach(
+e=>e.isIntersecting&&e.target.classList.add('show')
+),
+{threshold:.12}
+);
+
+document
+.querySelectorAll('.reveal')
+.forEach(e=>o.observe(e));
+
+
+const modal=document.getElementById('booking');
+const form=document.getElementById('bookingForm');
+const pkg=document.getElementById('bookingPackage');
+
+
+const openBooking=(selected)=>{
+
+modal.classList.add('open');
+
+modal.setAttribute(
+'aria-hidden',
+'false'
+);
+
+document.body.classList.add('modalOpen');
+
+if(selected)
+pkg.value=selected;
+
+setTimeout(
+()=>document.getElementById('bookingName').focus(),
+100
+);
+
+};
+
+
+document
+.querySelectorAll('[data-booking]')
+.forEach(btn=>
+btn.addEventListener(
+'click',
+e=>{
+e.preventDefault();
+openBooking(
+btn.dataset.package||''
+);
+}
+)
+);
+
+
+function closeBooking(){
+
+modal.classList.remove('open');
+
+modal.setAttribute(
+'aria-hidden',
+'true'
+);
+
+document.body.classList.remove(
+'modalOpen'
+);
+
+}
+
+
+document
+.querySelector('.closeBooking')
+.addEventListener(
+'click',
+closeBooking
+);
+
+
+modal.addEventListener(
+'click',
+e=>{
+if(e.target===modal)
+closeBooking()
+}
+);
+
+
+document.addEventListener(
+'keydown',
+e=>{
+if(e.key==='Escape')
+closeBooking()
+}
+);
+
+
+form.addEventListener(
+'submit',
+e=>{
+
+e.preventDefault();
+
+const name=document
+.getElementById('bookingName')
+.value.trim();
+
+const phone=document
+.getElementById('bookingPhone')
+.value.trim();
+
+const date=document
+.getElementById('bookingDate')
+.value;
+
+const time=document
+.getElementById('bookingTime')
+.value;
+
+const choice=pkg.value;
+
+
+if(
+!/^01[0-9]{9}$/
+.test(
+phone.replace(/[\s-]/g,'')
+)
+){
+
+alert(
+'اكتب رقم موبايل مصري صحيح 11 رقم، مثال: 01012345678'
+);
+
+return;
+
+}
+
+
+const msg=
+`السلام عليكم، عايز أعمل حجز في 4Gamerz Club 🎮%0A%0Aالاسم: ${name}%0Aرقم التليفون: ${phone}%0Aالباقة: ${choice}%0Aالتاريخ: ${date}%0Aالمعاد: ${time}%0A%0Aمستني تأكيد الحجز، شكراً ❤️`;
+
+window.open(
+'https://wa.me/201068300677?text='+msg,
+'_blank'
+);
+
+});
+
 </script>
-</body></html>
+
+
+<!-- =========================
+     DYNAMIC CONFIG
+========================= -->
+
+<script>
+
+(async function(){
+
+try{
+
+const r=await fetch('/api/config');
+
+if(!r.ok)
+return;
+
+const {config:c,images=[]}=await r.json();
+
+const wa=(c.whatsapp||'')
+.replace(/\D/g,'');
+
+
+/* TITLE */
+
+document.title=
+(c.siteName||'4Gamerz Club')+
+' | PC Gaming';
+
+
+/* ANNOUNCEMENT */
+
+document
+.querySelector('.status')
+?.replaceChildren(
+document.createTextNode(
+c.announcement||
+'PC GAMING • المنصورة'
+)
+);
+
+
+/* WEEKLY OFFER */
+
+const offerSection=
+document.getElementById('weeklyOffer');
+
+const offerTitle=
+document.getElementById('offerTitle');
+
+const offerText=
+document.getElementById('offerText');
+
+const offerNote=
+document.getElementById('offerNote');
+
+const offer=
+c.offer||{
+enabled:true,
+title:'عرض الأسبوع',
+text:'احجز 5 ساعات وخد ساعة إضافية مجانًا 🎮',
+note:'عرض لفترة محدودة'
+};
+
+if(offerSection){
+
+if(offer.enabled===false){
+
+offerSection.style.display='none';
+
+}else{
+
+offerTitle.textContent=
+'🔥 '+(
+offer.title||
+'عرض الأسبوع'
+);
+
+offerText.textContent=
+offer.text||
+'';
+
+offerNote.textContent=
+offer.note||
+'';
+
+}
+
+}
+
+
+/* LOCATION */
+
+const loc=
+document.querySelector(
+'#location .location'
+);
+
+if(loc){
+
+const ps=
+loc.querySelectorAll('p');
+
+if(ps[0])
+ps[0].textContent=
+c.address||'';
+
+const st=
+loc.querySelector('strong');
+
+if(st)
+st.textContent=
+c.addressLine||'';
+
+const map=
+loc.querySelector(
+'.locBtns a'
+);
+
+if(map)
+map.href=
+'https://www.google.com/maps/search/?api=1&query='+
+encodeURIComponent(
+c.mapsQuery||
+c.address||
+''
+);
+
+}
+
+
+/* WHATSAPP */
+
+document
+.querySelectorAll(
+'a[href*="wa.me/"]'
+)
+.forEach(a=>{
+
+a.href=
+'https://wa.me/'+
+wa+
+(
+a.href.includes('?text=')
+?
+'?text='+
+encodeURIComponent(
+'السلام عليكم، محتاج معلومات عن 4Gamerz Club'
+)
+:
+''
+);
+
+});
+
+
+/* PHONE */
+
+document
+.querySelectorAll(
+'a[href^="tel:"]'
+)
+.forEach(a=>
+a.href='tel:'+c.phone
+);
+
+
+document
+.querySelectorAll(
+'.contactBtns small'
+)
+.forEach(x=>
+x.textContent=
+c.phone||''
+);
+
+
+/* PRICES */
+
+const cards=[
+...document.querySelectorAll(
+'.price'
+)
+];
+
+(c.prices||[])
+.forEach(
+(p,i)=>{
+
+const el=cards[i];
+
+if(!el)
+return;
+
+el.querySelector(
+'h3'
+).textContent=
+p.name;
+
+el.querySelector(
+'strong'
+).innerHTML=
+p.price+
+' <small>EGP</small>';
+
+el.querySelector(
+'p'
+).textContent=
+p.hours;
+
+const a=
+el.querySelector('a');
+
+if(a)
+a.dataset.package=
+p.name+
+' - '+
+p.price+
+' جنيه';
+
+}
+);
+
+
+/* BOOKING PACKAGES */
+
+const selects=[
+...document.querySelectorAll(
+'#bookingPackage option'
+)
+];
+
+(c.prices||[])
+.forEach(
+(p,i)=>{
+
+if(selects[i+1]){
+
+selects[i+1].textContent=
+p.name+
+' - '+
+p.price+
+' جنيه';
+
+selects[i+1].value=
+p.name+
+' - '+
+p.price+
+' جنيه';
+
+}
+
+});
+
+
+/* GALLERY */
+
+const gallery=
+document.querySelector(
+'.gallery .photo'
+);
+
+if(
+gallery &&
+images.length
+){
+
+gallery
+.querySelector('img')
+.src=
+images[0].url;
+
+gallery
+.querySelector('img')
+.alt=
+images[0].alt||
+'4Gamerz Club';
+
+}
+
+
+/* EXTRA IMAGES */
+
+const mini=
+document.querySelector(
+'.gallery'
+);
+
+if(
+mini &&
+images.length>1
+){
+
+let extra=
+document.querySelector(
+'.adminGalleryExtra'
+);
+
+if(!extra){
+
+extra=
+document.createElement(
+'div'
+);
+
+extra.className=
+'adminGalleryExtra';
+
+extra.style.cssText=
+'display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px';
+
+mini.parentNode
+.appendChild(extra);
+
+}
+
+
+extra.innerHTML=
+images
+.slice(1)
+.map(
+x=>
+`<div style="height:260px;border-radius:18px;overflow:hidden;border:1px solid #fff1">
+<img
+src="${x.url}"
+alt="${String(x.alt||'4Gamerz').replace(/"/g,'&quot;')}"
+style="width:100%;height:100%;object-fit:cover">
+</div>`
+)
+.join('');
+
+}
+
+}catch(e){
+
+console.error(
+'CONFIG ERROR:',
+e
+);
+
+}
+
+})();
+
+</script>
+
+</body>
+</html>
